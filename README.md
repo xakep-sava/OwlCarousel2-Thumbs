@@ -1,8 +1,60 @@
-# Owl Carousel 2 Thumbnails plugin
-Enables thumbnail support for Owl Carousel 2.0
+# Owl Carousel 2 Thumbnails plugin (Fixed Thumbs Owl Slider)
+Enables thumbnail support for Owl Carousel 2.2.1
+
+##### Added carousel for thumbs  
 
 ## Quick start
-grab the [latest release](https://github.com/gijsroge/OwlCarousel2-Thumbs/archive/0.1.7.tar.gz) and slam it behind the default owl carousel plugin.
+1) initialize owl carousel;
+2) initialize thumbs carousel.
+
+// Example: 
+```javascript
+// initialize owl carousel
+
+$(window).on('load', function () {
+  var $owlThumbs = $('.owl-thumbs');
+  if($owlThumbs.length && $owlThumbs.find('button').length > 1) {
+    $owlThumbs.owlCarousel({
+      autoplay: false,
+      loop: true,
+      nav: true,
+      navText: [' ', ' '],
+      dots: false,
+      items: 7,
+      margin: 0,
+      thumbs: false,
+      thumbImage: false,
+      loadedClass: 'owl-carousel owl-loaded',
+      responsive : {
+          0 : {
+              items : 3
+          },
+          380 : {
+              items : 4
+          },
+          480 : {
+              items : 5
+          },
+          590 : {
+              items : 6
+          },
+          640 : {
+              items : 7
+          },
+          768 : {
+              items : 3
+          },
+          880 : {
+              items : 4
+          },
+          992 : {
+              items : 7
+          }
+      }
+    });
+  }
+});
+```
 
 ##### Enable thumbs
 ```javascript
@@ -72,15 +124,3 @@ $(document).ready(function(){
   });
 });
 ```
-
-## npm
-```
-npm install owl.carousel2.thumbs
-```
-
-## bower
-```
-bower install owl.carousel2.thumbs
-```
-
-</> with <3 in Belgium by [@GijsRoge](https://twitter.com/GijsRoge)

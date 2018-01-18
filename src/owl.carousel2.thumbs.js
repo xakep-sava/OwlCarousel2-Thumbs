@@ -1,7 +1,8 @@
 ﻿﻿/**
  * Thumbs Plugin
- * @version 2.0.0
+ * @version 2.1.0
  * @author Gijs RogÃ©
+ * @author Vladimir Savrov
  * @license The MIT License (MIT)
  */
 (function ($, window, document, undefined) {
@@ -76,14 +77,12 @@
                     this.render();
                     this.listen();
                     this._identifier = this.owl.$element.data('slider-id');
-                    this.setActive();
                 }
             }, this),
 
             'changed.owl.carousel': $.proxy(function (e) {
                 if (e.namespace && e.property.name === 'position' && this.owl.options.thumbs) {
                     this._identifier = this.owl.$element.data('slider-id');
-                    this.setActive();
                 }
             }, this)
         };
@@ -129,7 +128,7 @@
             this._identifier = $(e.target).closest('.' + options.thumbContainerClass).data('slider-id');
 
             // get index of clicked thumbnail
-            var index = $(e.target).parent().is(this._thumbcontent._thumbcontainer) ? $(e.target).index() : $(e.target).closest('.'+options.thumbItemClass).index();
+            var index = $(e.target).parent().is(this._thumbcontent._thumbcontainer) ? $(e.target).index() : $(e.target).closest('.' + options.thumbItemClass).data('index');
 
             if (options.thumbsPrerendered) {
                 // slide to slide :)
@@ -154,11 +153,11 @@
 
         //create thumbcontainer
         if (!options.thumbsPrerendered) {
-            this._thumbcontent._thumbcontainer = $('<div>').addClass(options.thumbContainerClass).appendTo(this.$element);
+            this._thumbcontent._thumbcontainer = $('<div>').addClass(options.thumbContainerClass).insertAfter(this.$element);
         } else {
             this._thumbcontent._thumbcontainer = $('.' + options.thumbContainerClass + '');
             if(options.moveThumbsInside){
-                this._thumbcontent._thumbcontainer.appendTo(this.$element);
+                this._thumbcontent._thumbcontainer.insertAfter(this.$element);
             }
         }
 
@@ -166,11 +165,11 @@
         var i;
         if (!options.thumbImage) {
             for (i = 0; i < this._thumbcontent.length; ++i) {
-                this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '>' + this._thumbcontent[i] + '</button>');
+                this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + ' data-index="' + i + '">' + this._thumbcontent[i] + '</button>');
             }
         } else {
             for (i = 0; i < this._thumbcontent.length; ++i) {
-                this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + '><img src="' + this._thumbcontent[i].attr('src') + '" alt="' + this._thumbcontent[i].attr('alt') + '" /></button>');
+                this._thumbcontent._thumbcontainer.append('<button class=' + options.thumbItemClass + ' data-index="' + i + '"><img src="' + this._thumbcontent[i].attr('src') + '" alt="' + this._thumbcontent[i].attr('alt') + '" /></button>');
             }
         }
     };
@@ -180,21 +179,12 @@
      * Updates active class on thumbnails
      * @protected
      */
-    Thumbs.prototype.setActive = function () {
-
-        // get startslide
-        this.owl_currentitem = this.owl._current - (this.owl._clones.length / 2);
-        if (this.owl_currentitem === this.owl._items.length) {
-            this.owl_currentitem = 0;
+    Thumbs.prototype.setActive = function (currentSlide) {
+        if(typeof currentSlide !== 'undefined') {
+            var thumbContainer = this._thumbcontent._thumbcontainer;
+            thumbContainer.find('.owl-stage').children().filter('.active').removeClass('active');
+            currentSlide.addClass('active');
         }
-
-        //set default options
-        var options = this.owl.options;
-
-        // set relative thumbnail container
-        var thumbContainer = options.thumbsPrerendered ? $('.' + options.thumbContainerClass + '[data-slider-id="' + this._identifier + '"]') : this._thumbcontent._thumbcontainer;
-        thumbContainer.children().filter('.active').removeClass('active');
-        thumbContainer.children().eq(this.owl_currentitem).addClass('active');
     };
 
 
