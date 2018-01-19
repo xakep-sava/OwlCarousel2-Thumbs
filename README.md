@@ -7,7 +7,11 @@ Enables thumbnail support for Owl Carousel 2.2.1
 1) initialize owl carousel;
 2) initialize thumbs carousel.
 
-// Example: 
+Screenshot:
+
+![Alt text](https://monosnap.com/file/Xc4DypbDAGEB6zTUgSrcS3co5mj5jQ.png "Screenshot")
+
+Example: 
 ```javascript
 // initialize owl carousel
 
